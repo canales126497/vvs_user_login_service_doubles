@@ -19,6 +19,12 @@ class UserLoginService
 
         $this->loggedUsers[] = $userToLog;
     }
+    public function getLoggedUsers()
+    {
+        return $this->loggedUsers;
+    }
+
+
     public function isLogged(User $userToCheck): bool
     {
         foreach($this->loggedUsers as $userIterator => $currentUser)
