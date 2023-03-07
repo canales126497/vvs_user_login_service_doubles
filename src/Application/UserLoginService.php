@@ -19,7 +19,7 @@ class UserLoginService
 
         $this->loggedUsers[] = $userToLog;
     }
-    public function getLoggedUsers()
+    public function getLoggedUsers(): array
     {
         return $this->loggedUsers;
     }
