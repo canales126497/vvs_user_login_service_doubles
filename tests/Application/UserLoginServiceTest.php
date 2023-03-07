@@ -47,6 +47,8 @@ final class UserLoginServiceTest extends TestCase
         $user = new User("Nuevo usuario");
         $userLoginService->manualLogin($user);
 
+        // TODO: Usar un doble con Stub para hacer que el test pase
+
         $this->assertEquals(4, $userLoginService->getExternalSessions());
     }
 }
