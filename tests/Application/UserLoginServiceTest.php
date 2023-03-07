@@ -6,6 +6,7 @@ namespace UserLoginService\Tests\Application;
 
 use PHPUnit\Framework\TestCase;
 use UserLoginService\Application\UserLoginService;
+use UserLoginService\Domain\User;
 
 final class UserLoginServiceTest extends TestCase
 {
@@ -14,12 +15,25 @@ final class UserLoginServiceTest extends TestCase
      */
     public function userIsLoggedIn()
     {
+        $this->expectExceptionMessage("User already logged in");
+
         $userLoginService = new UserLoginService();
 
         $user = new User("Nuevo usuario");
         $userLoginService->manualLogin($user);
         $userLoginService->manualLogin($user);
+    }
 
-        $this->expectExceptionMessage("User already logged in");
+    /**
+     * @test
+     */
+    public function userIsNotLoggedIn()
+    {
+        $userLoginService = new UserLoginService();
+
+        $user = new User("Nuevo usuario");
+        $userLoginService->manualLogin($user);
+
+        $this->assertEquals(true, $userLoginService->isLogged($user));
     }
 }
