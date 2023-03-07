@@ -21,15 +21,12 @@ class UserLoginService
     }
     public function isLogged(User $userToCheck): bool
     {
-        $isLogged = false;
-        $userIterator = 0;
-        while(!$isLogged and $userIterator < count($this->loggedUsers))
+        foreach($this->loggedUsers as $userIterator => $currentUser)
         {
-            if($this->loggedUsers[$userIterator] === $userToCheck)
-                $isLogged = true;
-            $userIterator = $userIterator + 1;
+            if($currentUser === $userToCheck)
+                return true;
         }
 
-        return $isLogged;
+        return false;
     }
 }
