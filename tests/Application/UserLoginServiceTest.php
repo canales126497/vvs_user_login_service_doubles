@@ -36,4 +36,17 @@ final class UserLoginServiceTest extends TestCase
 
         $this->assertEquals(true, $userLoginService->isLogged($user));
     }
+
+    /**
+     * @test
+     */
+    public function canReturnNumberOfExternalActiveSessions()
+    {
+        $userLoginService = new UserLoginService();
+
+        $user = new User("Nuevo usuario");
+        $userLoginService->manualLogin($user);
+
+        $this->assertEquals(4, $userLoginService->getExternalSessions());
+    }
 }

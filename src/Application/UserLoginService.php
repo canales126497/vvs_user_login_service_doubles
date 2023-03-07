@@ -3,6 +3,7 @@
 namespace UserLoginService\Application;
 
 use UserLoginService\Domain\User;
+use UserLoginService\Infrastructure\FacebookSessionManager;
 use \Exception;
 use function PHPUnit\Framework\throwException;
 
@@ -24,6 +25,11 @@ class UserLoginService
         return $this->loggedUsers;
     }
 
+    public function getExternalSessions(): int
+    {
+        $facebookSessionManager = new FacebookSessionManager();
+        return $facebookSessionManager->getSessions();
+    }
 
     public function isLogged(User $userToCheck): bool
     {
