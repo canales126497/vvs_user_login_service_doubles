@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace UserLoginService\Tests\Application;
 
+use Mockery;
 use PHPUnit\Framework\TestCase;
+use UserLoginService\Application\SessionManager;
 use UserLoginService\Application\UserLoginService;
 use UserLoginService\Domain\User;
+use UserLoginService\Infrastructure\FacebookSessionManager;
 
 final class UserLoginServiceTest extends TestCase
 {
@@ -17,7 +20,7 @@ final class UserLoginServiceTest extends TestCase
     {
         $this->expectExceptionMessage("User already logged in");
 
-        $userLoginService = new UserLoginService();
+        $userLoginService = new UserLoginService(new FacebookSessionManager());
 
         $user = new User("Nuevo usuario");
         $userLoginService->manualLogin($user);
@@ -29,7 +32,7 @@ final class UserLoginServiceTest extends TestCase
      */
     public function userIsNotLoggedIn()
     {
-        $userLoginService = new UserLoginService();
+        $userLoginService = new UserLoginService(new FacebookSessionManager());
 
         $user = new User("Nuevo usuario");
         $userLoginService->manualLogin($user);
@@ -42,12 +45,14 @@ final class UserLoginServiceTest extends TestCase
      */
     public function canReturnNumberOfExternalActiveSessions()
     {
-        $userLoginService = new UserLoginService();
+        $sessionManager = Mockery::mock(SessionManager::class);
 
-        $user = new User("Nuevo usuario");
-        $userLoginService->manualLogin($user);
+        $sessionManager->allows()->getSessions()->andReturn(4);
 
-        // TODO: Usar un doble con Stub para hacer que el test pase
+        $userLoginService = new UserLoginService($sessionManager);
+        $user = new User("user_name");
+
+
 
         $this->assertEquals(4, $userLoginService->getExternalSessions());
     }

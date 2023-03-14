@@ -10,6 +10,11 @@ use function PHPUnit\Framework\throwException;
 class UserLoginService
 {
     private array $loggedUsers = [];
+    private SessionManager $sessionManager;
+
+    function __construct($sessionMaager){
+        $this->sessionManager = $sessionMaager;
+    }
 
     public function manualLogin(User $userToLog): void
     {
@@ -27,8 +32,7 @@ class UserLoginService
 
     public function getExternalSessions(): int
     {
-        $facebookSessionManager = new FacebookSessionManager();
-        return $facebookSessionManager->getSessions();
+        return $this->sessionManager->getSessions();
     }
 
     public function isLogged(User $userToCheck): bool
