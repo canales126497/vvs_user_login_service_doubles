@@ -61,14 +61,15 @@ final class UserLoginServiceTest extends TestCase
      * @test
      */
     public function canLogoutUser(){
-        $sessionManager = Mockery::mock(SessionManager::class);
-        $sessionManager->allows()->logout("user_name");
+        $sessionManager = Mockery::spy(SessionManager::class);
         $userLoginService = new UserLoginService($sessionManager);
 
         $user = new User("user_name");
         $userLoginService->manualLogin($user);
         $response = $userLoginService->logout($user);
 
+        $sessionManager->shouldHaveReceived()->logout("user_name");
+        
         $this->assertEquals('ok', $response);
     }
 
@@ -76,8 +77,7 @@ final class UserLoginServiceTest extends TestCase
      * @test
      */
     public function returnsMsgWhenNoFoundLogoutUser(){
-        $sessionManager = Mockery::mock(SessionManager::class);
-        $sessionManager->allows()->logout("user_name");
+        $sessionManager = Mockery::spy(SessionManager::class);
         $userLoginService = new UserLoginService($sessionManager);
 
         $user = new User("user_name");
