@@ -45,4 +45,25 @@ class UserLoginService
 
         return false;
     }
+
+    public function logout(User $user) : string
+    {
+
+        if(!$this->isLogged($user))
+            return "User not found";
+
+        $position_of_user = 0;
+        foreach($this->loggedUsers as $userIterator => $currentUser)
+        {
+            if($currentUser === $user)
+                break;
+            $position_of_user = $position_of_user + 1;
+        }
+
+        $this->sessionManager->logout($user->getName());
+
+        array_splice($this->loggedUsers, $position_of_user, 1);
+
+        return 'ok';
+    }
 }
